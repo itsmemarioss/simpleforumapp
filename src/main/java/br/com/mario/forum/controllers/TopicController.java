@@ -4,7 +4,10 @@ import br.com.mario.forum.model.Category;
 import br.com.mario.forum.model.Topic;
 import br.com.mario.forum.service.CategoryService;
 import br.com.mario.forum.service.TopicService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,24 +37,37 @@ public class TopicController {
     public ModelAndView newTopic(){
         ModelAndView form = new ModelAndView("new-topic");
         form.addObject("categories", categoryService.findAll());
+        form.addObject(new Topic());
+
         return form;
     }
 
-    @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public RedirectView postTopic(Topic topic, RedirectAttributes attr){
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    public String postTopic(@Validated Topic topic, Errors errors, RedirectAttributes attributes){
+
+        if(errors.hasErrors()){
+            return "new-topic";
+        }
 
         service.save(topic);
 
-        RedirectView index = new RedirectView("/");
-        attr.addFlashAttribute("msg", "New topic added!");
+        attributes.addFlashAttribute("msg", "New topic added!");
 
-        return index;
+        return "redirect:/topic/new";
     }
 
     @RequestMapping("{id}")
     public ModelAndView viewTopic(@PathVariable Long id){
         ModelAndView detail = new ModelAndView("topic");
         detail.addObject("topic", service.findById(id));
+        return detail;
+
+    }
+
+    @RequestMapping("/edit/{id}")
+    public ModelAndView editTopic(@PathVariable("id") Topic topic){
+        ModelAndView detail = new ModelAndView("new-topic");
+        detail.addObject("topic", topic);
         return detail;
 
     }

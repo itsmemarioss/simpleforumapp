@@ -25,12 +25,11 @@
                 </div>
             </div>
 
-            <div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(msg)}" th:text="${msg}"></div>
-
             <h3 class="text-center">Lastest Topics</h3>
             <div style="margin-bottom: 10px;" class="card" th:each="topic : ${topics}"  >
                 <div class="card-header" th:text="${topic.title}">
                     Title
+                    <a href="#" class="badge badge-pill badge-warning"  th:text="${topic.category.name}" />
                 </div>
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
@@ -38,6 +37,7 @@
                         <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
                     </blockquote>
                     <a class="btn btn-primary" th:href="@{/topic/{id}(id=${topic.id})}" >Read More</a>
+                    <a class="btn btn-secondary" th:href="@{/topic/edit/{id}(id=${topic.id})}" >Edit Topic</a>
                 </div>
             </div>
         </div>

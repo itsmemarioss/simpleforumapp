@@ -22,13 +22,17 @@
                     </blockquote>
 
                 </div>
+                <div class="card-footer text-muted">
+                    <section th:each="comment : ${topic.comments} " th:text="${comment.text}"></section>
+                </div>
             </div><!-- card div -->
             <form method="post" action="/comment">
-                <input th:text="${topic.id}" hidden="true" name="topic">
+
+                <input th:value="${topic.id}" type="hidden" name="topic">
 
                 <div class="form-group">
                     <label for="comment">Leave your comment</label>
-                    <textarea id="comment" name="text"></textarea>
+                    <textarea id="comment" class="form-control" name="text"></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Comment</button>

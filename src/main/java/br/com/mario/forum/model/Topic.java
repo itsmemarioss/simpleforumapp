@@ -1,6 +1,8 @@
 package br.com.mario.forum.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -13,11 +15,12 @@ public class Topic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Please, add a title for your topic.")
     private String title;
+    @NotBlank(message = "It is necessary inform the text of the topic.")
     private String text;
 
-    public Topic() {
-    }
+    public Topic() {}
 
     public Topic(String title, String text) {
         this.title = title;
